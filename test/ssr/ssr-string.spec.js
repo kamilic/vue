@@ -1314,6 +1314,19 @@ describe('SSR: renderToString', () => {
     })
   })
 
+  it('should not double escape style attribute values', done => {
+    renderVmWithOptions({
+      template: `
+      <div>
+        <div style="background: url(https://foo.bar/foo.png) no-repeat center center;\nbackground-size: cover;"></div>
+      </div>
+      `
+    }, result => {
+      expect(result).toContain(`<div style="background: url(https://foo.bar/foo.png) no-repeat center center;background-size: cover;"></div>`)
+      done()
+    })
+  });
+
   // #7859
   it('should not double escape class values', done => {
     renderVmWithOptions({
